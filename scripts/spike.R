@@ -29,3 +29,27 @@ sample_w_categories <- merge(
     merge(
         TALAJ_DICT, by.x = "talaj", by.y = "Talaj Kód", all.x = TRUE
     )
+
+# Plot sample of data
+sample_size <- 20000
+seed <- 93
+
+set.seed(seed)
+sample_w_categories %>%
+    .[sample(.N, sample_size)] %>%
+    .[, .(x, y, `Magasság Kategória név`, `Talaj Kategória név`)] %>%
+    melt(id.vars = c("x", "y")) %>%  
+    ggplot(aes(x = x, y = y, color = as.factor(value))) +
+    geom_point() +
+    facet_grid(.~variable) +
+    scale_x_continuous(label = scales::comma) +
+    scale_y_continuous(label = scales::comma) +
+    labs(
+        title = glue("Landscape categories based on a subsample of {scales::comma(sample_size)}")
+    ) +
+    theme_minimal()
+
+ggsave(
+    file.path("figures", glue("landscape_seed_{seed}_n_{sample_size}.png")),
+    width = 16, height = 9
+)
