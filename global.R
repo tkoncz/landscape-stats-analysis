@@ -1,5 +1,6 @@
 suppressPackageStartupMessages(library("data.table"))
 suppressPackageStartupMessages(library("magrittr"))
+suppressPackageStartupMessages(library("purrr"))
 suppressPackageStartupMessages(library("raster"))
 suppressPackageStartupMessages(library("glue"))
 suppressPackageStartupMessages(library("ggplot2"))

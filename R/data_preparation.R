@@ -1,33 +1,37 @@
-readSampleData <- function(refetch = FALSE) {
-    file_name <- file.path("data", "sample_data.csv")
+readData <- function(ascii_folder, refetch = FALSE) {
+    file_name <- file.path(ascii_folder, "merged_data_from_asciis.csv")
 
-    if(!refetch & file.exists(file_name)) {
+    if(!refetch && file.exists(file_name)) {
         message("reading from .csv")
-        sample_data <- fread(file_name)
+        ascii_data <- fread(file_name)
     } else {
         message("reading from .ascii files")
-        sample_data <- getSampleDataFromASCII()
-        fwrite(sample_data, file_name)
+        ascii_data <- getDataFromASCII(ascii_folder)
+        fwrite(ascii_data, file_name)
     }
 
-    sample_data
+    ascii_data
 }
 
-getSampleDataFromASCII <- function() {
-    magassag <- raster(file.path("data", "ascii", "magassag.asc")) %>% 
-        as.data.frame(xy = TRUE) %>% 
-        as.data.table()
+getDataFromASCII <- function(ascii_folder) {
+    ascii_files <- list.files(
+        path = ascii_folder, pattern = "\\.asc$", full.names = TRUE
+    )
 
-    message("Magassag:")
-    print(magassag[, .N, by = is.na(magassag)])
+    attribute_list <- map(ascii_files, ~{
+        current_variable <- gsub(".*/(.*)\\.asc$", "\\1", .x)
+        dt <- raster(.x) %>% 
+            as.data.frame(xy = TRUE) %>% 
+            as.data.table()
 
-    talaj <- raster(file.path("data", "ascii", "talaj.asc")) %>% 
-        as.data.frame(xy = TRUE) %>% 
-        as.data.table()
+        message(glue("{Sys.time()}, {.x}: "))
+        print(dt[, .(
+            row_count = scales::comma(.N), 
+            NA_count  = scales::comma(sum(is.na(get(current_variable))))
+        )])
 
-    message("Talaj:")
-    print(talaj[, .N, by = is.na(talaj)])
+        dt[!is.na(get(current_variable))]
+    })
 
-    sample_data <- merge(talaj, magassag, by = c("x", "y"), all = TRUE) %>%
-        .[!(is.na(talaj) & is.na(magassag))]
+    reduce(attribute_list, merge, by = c("x", "y"), all = TRUE)
 }

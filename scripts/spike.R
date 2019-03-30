@@ -19,11 +19,11 @@ TALAJ_DICT <- data.table(
 )
 
 # Read landscape data ----
-raw_sample <- readSampleData(refetch = FALSE)
+ascii <- readData(file.path("data", "ascii"), refetch = FALSE)
 
 # Add info from mapping tables ---- 
-sample_w_categories <- merge(
-    raw_sample, MAGASSAG_DICT, 
+ascii_w_categories <- merge(
+    ascii, MAGASSAG_DICT, 
     by.x = "magassag", by.y = "Magasság Kód", all.x = TRUE
 ) %>%
     merge(
@@ -35,7 +35,7 @@ sample_size <- 20000
 seed <- 93
 
 set.seed(seed)
-sample_w_categories %>%
+ascii_w_categories %>%
     .[sample(.N, sample_size)] %>%
     .[, .(x, y, `Magasság Kategória név`, `Talaj Kategória név`)] %>%
     melt(id.vars = c("x", "y")) %>%  
