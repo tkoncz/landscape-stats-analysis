@@ -35,3 +35,11 @@ getDataFromASCII <- function(ascii_folder) {
 
     reduce(attribute_list, merge, by = c("x", "y"), all = TRUE)
 }
+
+convertVariableColsToFactor_ <- function(dt) {
+    var_names <- names(dt)[c(-1, -2)]
+    dt[, 
+        (var_names) := lapply(.SD, as.factor), 
+        .SDcols = var_names
+    ]
+}
