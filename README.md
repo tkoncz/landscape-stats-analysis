@@ -17,12 +17,13 @@
 
 ## Clustering
 - https://www.r-bloggers.com/clustering-mixed-data-types-in-r/
-- https://dabblingwithdata.wordpress.com/2016/10/10/clustering-categorical-data-with-r/
 - https://stats.stackexchange.com/questions/151942/hierarchical-clustering-of-categorical-variables-in-r-alternative-algorithms
 - https://www.quora.com/How-do-I-do-clustering-for-categorical-data
 - https://shapeofdata.wordpress.com/2014/03/04/k-modes/
 
-### Distance
+- https://dabblingwithdata.wordpress.com/2016/10/10/clustering-categorical-data-with-r/
+- http://www.cs.ust.hk/~qyang/Teaching/537/Papers/huang98extensions.pdf
+- https://cran.r-project.org/web/packages/klaR/klaR.pdf
 
 [Kaggle: Clustering of Categorical Data](https://www.kaggle.com/vijjikiran/clustering-of-categorical-data):  
 Typical clustering algorithm: `k-means`.  
@@ -65,3 +66,6 @@ Questions:
     - K?  
     - handle missing data?  
     - article on K-modes: http://www.irma-international.org/viewtitle/10828/
+
+### K-modes trial
+Full data: runs out of memory. OK with 1M sampled rows
