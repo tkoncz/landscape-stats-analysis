@@ -24,3 +24,44 @@ plotClustersOnMap <- function(ascii_w_clusters) {
 
     cluster_plot_map
 }
+
+plotKModesElbowChart <- function(kmodes_output, preferred_num_cluster = NA_integer_) {
+    within_cluster_distances <- imap(kmodes_output, ~{
+        data.table(
+            num_cluster = as.integer(.y),
+            sum_within_cluster_distance = sum(.x[["withindiff"]])
+        )
+    }) %>% rbindlist()
+
+    elbow_plot <- within_cluster_distances %>%
+        ggplot(aes(x = num_cluster, y = sum_within_cluster_distance)) +
+            geom_vline(xintercept = preferred_num_cluster, color = "red") +
+            geom_point() +
+            geom_line() +
+            scale_y_continuous(
+                labels = scales::comma, breaks = scales::pretty_breaks(5)
+            ) +
+            scale_x_continuous(
+                labels = 0:within_cluster_distances[, max(num_cluster)],
+                breaks = 0:within_cluster_distances[, max(num_cluster)]
+            ) +
+            expand_limits(x = 0) +
+            labs(
+                title    = "Elbow Chart for Different Number of Clusters",
+                subtitle = "Based on the K-modes Clustering Method",
+                x        = "Number of Clusters",
+                y        = "Sum of Within Cluster Distances"
+            ) +
+            theme_minimal() +
+            theme(
+                panel.grid.minor = element_blank()
+            )
+
+    ggsave(
+        filename = file.path("figures", "kmodes_elbow_chart.png"),
+        plot = elbow_plot,
+        width = 8, height = 6
+    )
+
+    elbow_plot
+}
