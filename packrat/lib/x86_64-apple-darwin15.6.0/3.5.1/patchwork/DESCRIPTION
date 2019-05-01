@@ -1,0 +1,32 @@
+Package: patchwork
+Type: Package
+Title: The Composer of ggplots
+Version: 0.0.1
+Date: 2017-11-28
+Authors@R: person(given = "Thomas Lin", family = "Pedersen", role =
+    c("cre", "aut"), email = "thomasp85@gmail.com")
+Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>
+Description: The 'ggplot2' package provides a strong API for
+    sequentially building up a plot, but does not concern itself with
+    composition of multiple plots. 'patchwork' is a package that
+    expands the API to allow for arbitrarily complex composition of
+    plots by providing mathmatical operators for combining multiple
+    plots. Other packages that addresses this need (but with a
+    different approach) are 'gridExtra' and 'cowplot'.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: ggplot2 (>= 3.0.0), gtable, grid, stats, grDevices, utils
+RoxygenNote: 6.0.1.9000
+Roxygen: list(markdown = TRUE)
+URL: https://github.com/thomasp85/patchwork
+BugReports: https://github.com/thomasp85/patchwork/issues
+GithubRepo: patchwork
+GithubUsername: thomasp85
+GithubRef: master
+GithubSHA1: fd7958bae3e7a1e30237c751952e412a0a1d1242
+Author: Thomas Lin Pedersen [cre, aut]
+Built: R 3.5.1; ; 2019-05-01 20:36:40 UTC; unix
+InstallAgent: packrat 0.5.0
+InstallSource: github
+Hash: 39ff4b27431b8b3d6712f5c9fbcd93ee

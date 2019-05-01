@@ -1,0 +1,10 @@
+patchwork               patchwork: The Composer of ggplots
+plot_annotation         Annotate the final plot assemble
+plot_arithmetic         Plot arithmetic
+plot_layout             Define the grid to compose plots in
+plot_spacer             Add a completely blank area
+wrap_elements           Wrap arbitrary graphics in a
+                        patchwork-compliant cell
+wrap_ggplot_grob        Make a gtable created from a ggplot object
+                        patchwork compliant
+wrap_plots              Wrap plots into an assemble

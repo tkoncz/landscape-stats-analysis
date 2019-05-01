@@ -1,0 +1,16 @@
+patchwork-package	patchwork
+&.gg	plot_arithmetic
+*.gg	plot_arithmetic
+-.ggplot	plot_arithmetic
+/.ggplot	plot_arithmetic
+cellGrob	cellGrob
+patchwork	patchwork
+patchworkGrob	patchworkGrob
+plot_annotation	plot_annotation
+plot_arithmetic	plot_arithmetic
+plot_layout	plot_layout
+plot_spacer	plot_spacer
+wrap_elements	wrap_elements
+wrap_ggplot_grob	wrap_ggplot_grob
+wrap_plots	wrap_plots
+|.ggplot	plot_arithmetic
