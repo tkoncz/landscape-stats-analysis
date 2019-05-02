@@ -35,7 +35,7 @@ createSummaryDtForContingencyPlot <- function(dt, variable1, variable2) {
 
 plotContigencyTable <- function(summary_dt,
                                 variable1, variable2,
-                                chi_square_test,
+                                association_statistics,
                                 show_rates = FALSE) {
     contingency_plot <- summary_dt %>%
         .[, frequency_to_expected_frequency_capped := pmin(
@@ -64,7 +64,7 @@ plotContigencyTable <- function(summary_dt,
     contingency_plot <- contingency_plot +
         labs(
             title = bquote(Contingency~table~between~variables~bold(.(variable1))~and~bold(.(variable2))),
-            subtitle = createSubtitleFromChiSquareTest(chi_square_test)
+            subtitle = createSubtitleFromAssociationStats(association_statistics)
         ) +
         theme_minimal() +
         theme(
@@ -86,11 +86,17 @@ plotContigencyTable <- function(summary_dt,
     contingency_plot
 }
 
-createSubtitleFromChiSquareTest <- function(chi_square_test) {
-    chi_squared <- scales::comma(chi_square_test[["statistic"]])
-    p_value     <- format(chi_square_test[["p.value"]], nsmall = 6)
+createSubtitleFromAssociationStats <- function(association_statistics) {
+    pearson_chi_squared <- scales::comma(association_statistics$chisq_tests[2])
+    pearson_p_value     <- format(association_statistics$chisq_tests[6], nsmall = 3)
+    pearson_contingency_coeff <- round(association_statistics$contingency, digits = 3)
+    cramer_v                  <- round(association_statistics$cramer, digits = 4)
 
-    glue("Chi-squared: {chi_squared}, p-value: {p_value}")
+    paste(
+        glue("Pearson's X-squared: {pearson_chi_squared}, p-value: {pearson_p_value}"),
+        glue("Pearson's Contingency Coeff.: {pearson_contingency_coeff}, Cramer's V: {cramer_v}"),
+        sep = "\n"
+    )
 }
 
 createFileNameForSaving <- function(variable1, variable2, show_rates) {

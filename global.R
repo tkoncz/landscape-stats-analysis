@@ -9,6 +9,7 @@ suppressPackageStartupMessages(library("patchwork"))
 # special packages for this project
 suppressPackageStartupMessages(library("raster"))
 suppressPackageStartupMessages(library("klaR"))
+suppressPackageStartupMessages(library("vcd"))
 
 
 invisible(sapply(list.files("R", full.names = TRUE), source))
