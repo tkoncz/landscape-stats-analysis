@@ -26,4 +26,11 @@ iwalk(kmodes_output, ~{
 plotClustersOnMap(ascii_aggr_to_resolution_w_clusters)
 
 # plot elbow chart for within cluster distances ----
-plotKModesElbowChart(kmodes_output, preferred_num_cluster = 7)
+preferred_num_cluster <- 8
+plotKModesElbowChart(kmodes_output, preferred_num_cluster)
+
+# plot share of variable values across clusters ----
+plotShareOfVariableValuesAcrossClusters(ascii_aggr_to_resolution_w_clusters, preferred_num_cluster)
+## TODO: add variable value as geom_text for larger ones
+## TODO: colors in frequency order?
+## TODO: add "global" benchmark row

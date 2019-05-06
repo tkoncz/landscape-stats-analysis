@@ -65,3 +65,59 @@ plotKModesElbowChart <- function(kmodes_output, preferred_num_cluster = NA_integ
 
     elbow_plot
 }
+
+plotShareOfVariableValuesAcrossClusters <- function(ascii_w_clusters,
+                                                    preferred_num_cluster) {
+    cluster_col   <- paste0("cluster_", preferred_num_cluster)
+    share_of_variable_values_in_clusters <- prepareDataForShareOfVariableValuesAcrossClustersPlot(
+        ascii_w_clusters, cluster_col, preferred_num_cluster
+    )
+
+    p <- share_of_variable_values_in_clusters %>%
+        ggplot(aes_string(x = cluster_col, y = "share_in_cluster", fill = "variable_value")) +
+            geom_col() +
+            facet_grid(. ~ variable_name) +
+            viridis::scale_fill_viridis(discrete = TRUE) +
+            scale_y_continuous(breaks = c(0, .25, .50, .75, 1)) +
+            coord_flip() +
+            labs(
+                title = "Share of Variable Values Across Clusters",
+                x = "Assigned Cluster",
+                y = "Share in Cluster"
+            ) +
+            theme_minimal() +
+            theme(
+                panel.grid.minor = element_blank(),
+                panel.grid.major.y = element_blank(),
+                legend.position = "none",
+                axis.text.x = element_text(angle = 45, hjust = 1)
+            )
+
+    ggsave(
+        filename = file.path("figures", "share_of_variable_values_across_clusters.png"),
+        plot = p,
+        width = 12, height = 9
+    )
+
+    p
+}
+
+prepareDataForShareOfVariableValuesAcrossClustersPlot <- function(ascii_w_clusters,
+                                                                  cluster_col,
+                                                                  preferred_num_cluster) {
+    variable_cols <- getVariableCols()
+    map(variable_cols, ~{
+        ascii_w_clusters %>%
+            .[, .N, by = c(.x, cluster_col)] %>%
+            .[, .(get(.x), N / sum(N)), by = c(cluster_col)] %>%
+            setnames(c(cluster_col, .x, "share_in_cluster")) %>%
+            melt(
+                id.vars = c(cluster_col, "share_in_cluster"),
+                variable.name = "variable_name",
+                value.name = "variable_value",
+                value.factor = TRUE
+            ) %>%
+            .[, (cluster_col) := factor(get(cluster_col), levels = preferred_num_cluster:1)] %>%
+            .[, variable_value := as.factor(variable_value)]
+    }) %>% rbindlist()
+}
